@@ -85,6 +85,18 @@
     </style>
 </head>
 <body>
+    <div id="overlay" class="overlay"></div>
+    <div id="championModal" class="modal">
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <div class="modal-content">
+            <h3 id="modalChampName">Champion Name</h3>
+            <ul>
+                <li>1. God</li>
+                <li>2. Noob</li>
+            </ul>
+        </div>
+    </div>
+
     <div class="champions-container">
         <h1 data-text="Champion Database">Champion Database</h1>
         
@@ -141,8 +153,30 @@
             img.onerror = () => img.src = 'placeholder.png';
             
             card.appendChild(img);
+            card.onclick = () => showModal(championName);
             return card;
         }
+
+        function showModal(championName) {
+            const modal = document.getElementById('championModal');
+            const overlay = document.getElementById('overlay');
+            const modalTitle = document.getElementById('modalChampName');
+            
+            modalTitle.textContent = championName;
+            modal.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('championModal');
+            const overlay = document.getElementById('overlay');
+            
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        // Zamykanie modalu po kliknięciu w overlay
+        document.getElementById('overlay').onclick = closeModal;
 
         // Wypełnij sekcje championami
         Object.entries(champions).forEach(([role, championsList]) => {
