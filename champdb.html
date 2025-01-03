@@ -4,55 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Champion Database</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Dodatkowe style dla bazy championów */
         .champions-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
         }
 
         .role-section {
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .role-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+            background: linear-gradient(45deg, #fff, #aaa, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: titlePulse 3s ease-in-out infinite;
+            display: block;
+            margin-left: 1rem;
         }
 
         .champions-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
+            padding: 1rem;
         }
 
         .champion-card {
             width: 48px;
             height: 48px;
             transition: transform 0.2s;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
         }
 
         .champion-card:hover {
             transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
 
         .champion-card img {
             width: 100%;
             height: 100%;
             border-radius: 4px;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #fff, #aaa, #fff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: titlePulse 3s ease-in-out infinite;
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="champions-container">
-        <h1>Champion Database</h1>
+        <h1 data-text="Champion Database">Champion Database</h1>
         
         <div class="role-section">
             <h2>Top</h2>
@@ -80,7 +96,7 @@
         </div>
     </div>
 
-    <script src="../scripts.js"></script>
+    <script src="scripts.js"></script>
     <script>
         const champions = {
             top: ['Darius', 'Irelia'],
