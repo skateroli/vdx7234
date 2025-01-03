@@ -26,17 +26,6 @@
             position: relative;
         }
 
-        h1::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            right: 0;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            animation: textGlow 3s ease-in-out infinite;
-            opacity: 0;
-        }
-
         .role-section {
             margin-bottom: 2rem;
             text-align: left;
@@ -99,8 +88,26 @@
             animation: borderPulse 2s ease-in-out infinite;
         }
 
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
         .modal-content {
             position: relative;
+            z-index: 1;
         }
 
         .champion-header {
@@ -128,9 +135,19 @@
         .champion-info {
             padding: 10px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .authors-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .author-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 5px 0;
         }
 
         .close-button {
@@ -142,6 +159,7 @@
             color: white;
             font-size: 24px;
             cursor: pointer;
+            z-index: 2;
         }
 
         .overlay {
@@ -154,6 +172,16 @@
             background: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes borderPulse {
+            0%, 100% { border-color: rgba(255, 255, 255, 0.5); }
+            50% { border-color: rgba(255, 255, 255, 1); }
+        }
     </style>
 </head>
 <body>
@@ -161,13 +189,16 @@
     <div class="overlay" id="overlay"></div>
     <div id="championModal" class="modal">
         <button class="close-button" onclick="closeModal()">×</button>
-        <div class="champion-header">
-            <img id="modalChampIcon" src="" alt="">
-            <h3 id="modalChampName"></h3>
-        </div>
-        <div class="champion-info">
-            <span>Author:</span>
-            <span>Twoja Nazwa</span>
+        <div class="modal-content">
+            <div class="champion-header">
+                <img id="modalChampIcon" src="" alt="">
+                <h3 id="modalChampName"></h3>
+            </div>
+            <div class="champion-info">
+                <div class="authors-list" id="authorsList">
+                    <!-- Tu będą autorzy -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -202,50 +233,100 @@
 
     <script>
         const champions = {
-            top: ['Darius', 'Irelia', 'Olaf'],
-            jungle: ['Kindred', 'Graves', 'Lillia', 'LeeSin', 'Rengar'],
+            top: [
+                { name: 'Darius', authors: ['Author 1', 'Author 2'] },
+                { name: 'Irelia', authors: ['Author 3'] },
+                { name: 'Olaf', authors: ['Author 1'] }
+            ],
+            jungle: [
+                { name: 'Kindred', authors: ['Author 1'] },
+                { name: 'Graves', authors: ['Author 2'] },
+                { name: 'Lillia', authors: ['Author 3'] },
+                { name: 'LeeSin', authors: ['Author 1', 'Author 2'] },
+                { name: 'Rengar', authors: ['Author 2'] }
+            ],
             mid: [
-                'Ahri', 'Katarina', 'Orianna', 'Ryze', 'Yasuo', 'Zed', 'Viktor', 
-                'TwistedFate', 'Azir', 'Cassiopeia', 'Xerath', 'Syndra', 'Talon', 'Corki'
+                { name: 'Ahri', authors: ['Author 1'] },
+                { name: 'Katarina', authors: ['Author 2'] },
+                { name: 'Orianna', authors: ['Author 3'] },
+                { name: 'Ryze', authors: ['Author 1'] },
+                { name: 'Yasuo', authors: ['Author 2', 'Author 3'] },
+                { name: 'Zed', authors: ['Author 1'] },
+                { name: 'Viktor', authors: ['Author 2'] },
+                { name: 'TwistedFate', authors: ['Author 3'] },
+                { name: 'Azir', authors: ['Author 1'] },
+                { name: 'Cassiopeia', authors: ['Author 2'] },
+                { name: 'Xerath', authors: ['Author 3'] },
+                { name: 'Syndra', authors: ['Author 1'] },
+                { name: 'Talon', authors: ['Author 2'] },
+                { name: 'Corki', authors: ['Author 3'] }
             ],
             bot: [
-                'Jinx', 'Vayne', 'Xayah', 'KogMaw', 'Samira', 'Ezreal', 'Kaisa',
-                'Ashe', 'Caitlyn', 'Varus', 'Twitch', 'Zeri', 'Kalista', 'Sivir',
-                'Lucian', 'Nilah'
+                { name: 'Jinx', authors: ['Author 1'] },
+                { name: 'Vayne', authors: ['Author 2'] },
+                { name: 'Xayah', authors: ['Author 3'] },
+                { name: 'KogMaw', authors: ['Author 1'] },
+                { name: 'Samira', authors: ['Author 2', 'Author 3'] },
+                { name: 'Ezreal', authors: ['Author 1'] },
+                { name: 'Kaisa', authors: ['Author 2'] },
+                { name: 'Ashe', authors: ['Author 3'] },
+                { name: 'Caitlyn', authors: ['Author 1'] },
+                { name: 'Varus', authors: ['Author 2'] },
+                { name: 'Twitch', authors: ['Author 3'] },
+                { name: 'Zeri', authors: ['Author 1'] },
+                { name: 'Kalista', authors: ['Author 2'] },
+                { name: 'Sivir', authors: ['Author 3'] },
+                { name: 'Lucian', authors: ['Author 1'] },
+                { name: 'Nilah', authors: ['Author 2'] }
             ],
-            support: ['Lulu', 'Zilean', 'Swain', 'Milio', 'Nami', 'Senna', 'Brand']
+            support: [
+                { name: 'Lulu', authors: ['Author 1'] },
+                { name: 'Zilean', authors: ['Author 2'] },
+                { name: 'Swain', authors: ['Author 3'] },
+                { name: 'Milio', authors: ['Author 1', 'Author 2'] },
+                { name: 'Nami', authors: ['Author 2'] },
+                { name: 'Senna', authors: ['Author 3'] },
+                { name: 'Brand', authors: ['Author 1'] }
+            ]
         };
 
-        function createChampionCard(championName) {
+        function createChampionCard(champion) {
             const card = document.createElement('div');
             card.className = 'champion-card';
             
             const img = document.createElement('img');
-            img.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championName}.png`;
-            img.alt = championName;
-            img.onerror = () => img.src = 'placeholder.png';
+            img.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name}.png`;
+            img.alt = champion.name;
             
             card.appendChild(img);
-            card.onclick = () => showModal(championName);
+            card.onclick = () => showModal(champion);
             return card;
         }
 
-        // Wypełnij sekcje championami
-        Object.entries(champions).forEach(([role, championsList]) => {
-            const container = document.getElementById(`${role}-champions`);
-            championsList.forEach(champion => {
-                container.appendChild(createChampionCard(champion));
-            });
-        });
-
-        function showModal(championName) {
+        function showModal(champion) {
             const modal = document.getElementById('championModal');
             const modalIcon = document.getElementById('modalChampIcon');
             const modalTitle = document.getElementById('modalChampName');
+            const authorsList = document.getElementById('authorsList');
             const overlay = document.getElementById('overlay');
             
-            modalIcon.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championName}.png`;
-            modalTitle.textContent = championName;
+            modalIcon.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name}.png`;
+            modalTitle.textContent = champion.name;
+
+            // Wyczyść listę autorów
+            authorsList.innerHTML = '';
+            
+            // Dodaj autorów
+            champion.authors.forEach(author => {
+                const authorItem = document.createElement('div');
+                authorItem.className = 'author-item';
+                authorItem.innerHTML = `
+                    <span>Author:</span>
+                    <span>${author}</span>
+                `;
+                authorsList.appendChild(authorItem);
+            });
+            
             modal.style.display = 'block';
             overlay.style.display = 'block';
         }
@@ -256,6 +337,14 @@
             modal.style.display = 'none';
             overlay.style.display = 'none';
         }
+
+        // Wypełnij sekcje championami
+        Object.entries(champions).forEach(([role, championsList]) => {
+            const container = document.getElementById(`${role}-champions`);
+            championsList.forEach(champion => {
+                container.appendChild(createChampionCard(champion));
+            });
+        });
 
         // Zamykanie modalu po kliknięciu w overlay
         document.getElementById('overlay').onclick = closeModal;
