@@ -23,18 +23,6 @@
             background-clip: text;
             color: transparent;
             animation: titlePulse 3s ease-in-out infinite;
-            position: relative;
-        }
-
-        h1::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            right: 0;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            animation: textGlow 3s ease-in-out infinite;
-            opacity: 0;
         }
 
         .role-section {
@@ -50,9 +38,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: titlePulse 3s ease-in-out infinite;
-            display: block;
-            margin-left: 1rem;
         }
 
         .champions-grid {
@@ -69,7 +54,6 @@
             border-radius: 4px;
             overflow: hidden;
             box-shadow: 0 0 10px rgba(255,255,255,0.1);
-            cursor: pointer;
         }
 
         .champion-card:hover {
@@ -80,11 +64,9 @@
         .champion-card img {
             width: 100%;
             height: 100%;
-            border-radius: 4px;
             display: block;
         }
 
-        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -97,7 +79,6 @@
             border: 2px solid rgba(255, 255, 255, 0.5);
             z-index: 1000;
             min-width: 300px;
-            animation: borderPulse 2s ease-in-out infinite;
         }
 
         .overlay {
@@ -128,8 +109,8 @@
             padding: 10px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 5px;
         }
 
         .close-button {
@@ -154,65 +135,85 @@
             <h3 id="modalChampName"></h3>
         </div>
         <div class="champion-info">
-            <span>Author:</span>
-            <span>Twoja Nazwa</span>
+            <span><strong>Author(s):</strong> <span id="modalChampAuthors"></span></span>
         </div>
     </div>
 
-    <!-- Champions -->
+    <!-- Champions Section -->
     <div class="champions-container">
         <h1 data-text="Champion Database">Champion Database</h1>
-
+        
+        <!-- Top -->
         <div class="role-section">
             <h2>Top</h2>
-            <div class="champions-grid" id="top-champions"></div>
+            <div class="champions-grid">
+                <div class="champion-card" onclick="showModal('Darius', 'Author1')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Darius.png" alt="Darius">
+                </div>
+                <div class="champion-card" onclick="showModal('Irelia', 'Author2')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Irelia.png" alt="Irelia">
+                </div>
+                <div class="champion-card" onclick="showModal('Olaf', 'Author3')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Olaf.png" alt="Olaf">
+                </div>
+            </div>
         </div>
 
+        <!-- Jungle -->
         <div class="role-section">
             <h2>Jungle</h2>
-            <div class="champions-grid" id="jungle-champions"></div>
+            <div class="champions-grid">
+                <div class="champion-card" onclick="showModal('Kindred', 'Author4')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Kindred.png" alt="Kindred">
+                </div>
+                <div class="champion-card" onclick="showModal('Graves', 'Author5')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Graves.png" alt="Graves">
+                </div>
+            </div>
         </div>
 
+        <!-- Mid -->
         <div class="role-section">
             <h2>Mid</h2>
-            <div class="champions-grid" id="mid-champions"></div>
+            <div class="champions-grid">
+                <div class="champion-card" onclick="showModal('Ahri', 'Author6')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Ahri.png" alt="Ahri">
+                </div>
+            </div>
         </div>
 
+        <!-- Bot -->
         <div class="role-section">
             <h2>Bot</h2>
-            <div class="champions-grid" id="bot-champions"></div>
+            <div class="champions-grid">
+                <div class="champion-card" onclick="showModal('Jinx', 'Author7')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Jinx.png" alt="Jinx">
+                </div>
+            </div>
         </div>
 
+        <!-- Support -->
         <div class="role-section">
             <h2>Sup</h2>
-            <div class="champions-grid" id="support-champions"></div>
+            <div class="champions-grid">
+                <div class="champion-card" onclick="showModal('Lulu', 'Author8')">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Lulu.png" alt="Lulu">
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        const champions = {
-            top: ['Darius', 'Irelia', 'Olaf'],
-            jungle: ['Kindred', 'Graves', 'Lillia', 'LeeSin', 'Rengar'],
-            mid: [
-                'Ahri', 'Katarina', 'Orianna', 'Ryze', 'Yasuo', 'Zed', 'Viktor', 
-                'TwistedFate', 'Azir', 'Cassiopeia', 'Xerath', 'Syndra', 'Talon', 'Corki'
-            ],
-            bot: [
-                'Jinx', 'Vayne', 'Xayah', 'KogMaw', 'Samira', 'Ezreal', 'Kaisa',
-                'Ashe', 'Caitlyn', 'Varus', 'Twitch', 'Zeri', 'Kalista', 'Sivir',
-                'Lucian', 'Nilah'
-            ],
-            support: ['Lulu', 'Zilean', 'Swain', 'Milio', 'Nami', 'Senna', 'Brand']
-        };
-
-        function showModal(championName) {
+        function showModal(championName, authors) {
             const modal = document.getElementById('championModal');
             const modalIcon = document.getElementById('modalChampIcon');
             const modalTitle = document.getElementById('modalChampName');
+            const modalAuthors = document.getElementById('modalChampAuthors');
             const overlay = document.getElementById('overlay');
-            
+
             modalIcon.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championName}.png`;
             modalTitle.textContent = championName;
+            modalAuthors.textContent = authors;
             modal.style.display = 'block';
             overlay.style.display = 'block';
         }
@@ -223,31 +224,6 @@
             modal.style.display = 'none';
             overlay.style.display = 'none';
         }
-
-        function createChampionCard(championName) {
-            const card = document.createElement('div');
-            card.className = 'champion-card';
-            
-            const img = document.createElement('img');
-            img.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championName}.png`;
-            img.alt = championName;
-            img.onerror = () => img.src = 'placeholder.png';
-            
-            card.appendChild(img);
-            card.onclick = () => showModal(championName);
-            return card;
-        }
-
-        // Wypełnij sekcje championami
-        Object.entries(champions).forEach(([role, championsList]) => {
-            const container = document.getElementById(`${role}-champions`);
-            championsList.forEach(champion => {
-                container.appendChild(createChampionCard(champion));
-            });
-        });
-
-        // Zamykanie modalu po kliknięciu w overlay
-        document.getElementById('overlay').onclick = closeModal;
     </script>
 </body>
 </html>
