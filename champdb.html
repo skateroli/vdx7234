@@ -6,120 +6,6 @@
     <title>Champion Database</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Istniejące style bez zmian */
-
-        /* Dodane style dla modalu */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: black;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            z-index: 1000;
-            min-width: 300px;
-            animation: borderPulse 2s ease-in-out infinite;
-        }
-
-        .modal-content {
-            text-align: left;
-        }
-
-        .champion-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .champion-header img {
-            width: 64px;
-            height: 64px;
-            border-radius: 4px;
-        }
-
-        .champion-header h3 {
-            margin: 0;
-            font-size: 2rem;
-            background: linear-gradient(45deg, #fff, #aaa, #fff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-        }
-
-        @keyframes borderPulse {
-            0%, 100% { border-color: rgba(255, 255, 255, 0.5); }
-            50% { border-color: rgba(255, 255, 255, 1); }
-        }
-    </style>
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px white, 0 0 20px white;
-            opacity: 0.7;
-            animation: twinkle-star infinite;
-        }
-        
-        @keyframes twinkle-star {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.8; }
-            100% { opacity: 0.2; }
-        }
-
-        body {
-            background: black;
-            overflow-x: hidden;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: black;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            z-index: 1000;
-            min-width: 300px;
-            animation: borderPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes borderPulse {
-            0%, 100% { border-color: rgba(255, 255, 255, 0.5); }
-            50% { border-color: rgba(255, 255, 255, 1); }
-        }
-
-        /* Reszta stylów pozostaje bez zmian */
         .champions-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -138,6 +24,17 @@
             color: transparent;
             animation: titlePulse 3s ease-in-out infinite;
             position: relative;
+        }
+
+        h1::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: textGlow 3s ease-in-out infinite;
+            opacity: 0;
         }
 
         .role-section {
@@ -203,26 +100,15 @@
             animation: borderPulse 2s ease-in-out infinite;
         }
 
-        .modal::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        .modal-content {
-            position: relative;
-            z-index: 1;
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
         }
 
         .champion-header {
@@ -247,24 +133,6 @@
             color: transparent;
         }
 
-        .champion-info {
-            padding: 10px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .authors-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .author-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 0;
-        }
-
         .close-button {
             position: absolute;
             top: 10px;
@@ -274,23 +142,6 @@
             color: white;
             font-size: 24px;
             cursor: pointer;
-            z-index: 2;
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-        }
-
-        @keyframes shine {
-            0% { left: -50%; }
-            100% { left: 100%; }
         }
 
         @keyframes borderPulse {
@@ -304,32 +155,11 @@
     <div class="overlay" id="overlay"></div>
     <div id="championModal" class="modal">
         <button class="close-button" onclick="closeModal()">×</button>
-        <div class="modal-content">
-            <div class="champion-header">
-                <img id="modalChampIcon" src="" alt="">
-                <h3 id="modalChampName"></h3>
-            </div>
-            <div class="champion-info">
-                <div class="authors-list" id="authorsList">
-                    <!-- Tu będą autorzy -->
-                </div>
-            </div>
+        <div class="champion-header">
+            <img id="modalChampIcon" src="" alt="">
+            <h3 id="modalChampName"></h3>
         </div>
-    </div>
-
-    <!-- Dodany modal i overlay -->
-    <div class="overlay" id="overlay"></div>
-    <div id="championModal" class="modal">
-        <button class="close-button" onclick="closeModal()">×</button>
-        <div class="modal-content">
-            <div class="champion-header">
-                <img id="modalChampIcon" src="" alt="">
-                <h3 id="modalChampName"></h3>
-            </div>
-            <div class="champion-info">
-                <div id="authorsList"></div>
-            </div>
-        </div>
+        <div id="authorsList"></div>
     </div>
 
     <div class="champions-container">
@@ -361,25 +191,8 @@
         </div>
     </div>
 
+    <script src="scripts.js"></script>
     <script>
-        // Tworzenie gwiazd w tle
-        function createStars() {
-            const starsCount = 100;
-            const container = document.body;
-            
-            for (let i = 0; i < starsCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                container.appendChild(star);
-            }
-        }
-
-        // Inicjalizacja gwiazd przy załadowaniu strony
-        document.addEventListener('DOMContentLoaded', createStars);
-
         const champions = {
             top: [
                 { name: 'Darius', authors: ['Author 1', 'Author 2'] },
@@ -390,7 +203,7 @@
                 { name: 'Kindred', authors: ['Author 1'] },
                 { name: 'Graves', authors: ['Author 2'] },
                 { name: 'Lillia', authors: ['Author 3'] },
-                { name: 'LeeSin', authors: ['Author 1', 'Author 2'] },
+                { name: 'LeeSin', authors: ['Author 1'] },
                 { name: 'Rengar', authors: ['Author 2'] }
             ],
             mid: [
@@ -398,7 +211,7 @@
                 { name: 'Katarina', authors: ['Author 2'] },
                 { name: 'Orianna', authors: ['Author 3'] },
                 { name: 'Ryze', authors: ['Author 1'] },
-                { name: 'Yasuo', authors: ['Author 2', 'Author 3'] },
+                { name: 'Yasuo', authors: ['Author 2'] },
                 { name: 'Zed', authors: ['Author 1'] },
                 { name: 'Viktor', authors: ['Author 2'] },
                 { name: 'TwistedFate', authors: ['Author 3'] },
@@ -414,7 +227,7 @@
                 { name: 'Vayne', authors: ['Author 2'] },
                 { name: 'Xayah', authors: ['Author 3'] },
                 { name: 'KogMaw', authors: ['Author 1'] },
-                { name: 'Samira', authors: ['Author 2', 'Author 3'] },
+                { name: 'Samira', authors: ['Author 2'] },
                 { name: 'Ezreal', authors: ['Author 1'] },
                 { name: 'Kaisa', authors: ['Author 2'] },
                 { name: 'Ashe', authors: ['Author 3'] },
@@ -431,7 +244,7 @@
                 { name: 'Lulu', authors: ['Author 1'] },
                 { name: 'Zilean', authors: ['Author 2'] },
                 { name: 'Swain', authors: ['Author 3'] },
-                { name: 'Milio', authors: ['Author 1', 'Author 2'] },
+                { name: 'Milio', authors: ['Author 1'] },
                 { name: 'Nami', authors: ['Author 2'] },
                 { name: 'Senna', authors: ['Author 3'] },
                 { name: 'Brand', authors: ['Author 1'] }
@@ -460,20 +273,10 @@
             
             modalIcon.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name}.png`;
             modalTitle.textContent = champion.name;
-
-            // Wyczyść listę autorów
-            authorsList.innerHTML = '';
             
-            // Dodaj autorów
-            champion.authors.forEach(author => {
-                const authorItem = document.createElement('div');
-                authorItem.className = 'author-item';
-                authorItem.innerHTML = `
-                    <span>Author:</span>
-                    <span>${author}</span>
-                `;
-                authorsList.appendChild(authorItem);
-            });
+            authorsList.innerHTML = champion.authors.map(author => 
+                `<div style="padding: 5px 0;">Author: ${author}</div>`
+            ).join('');
             
             modal.style.display = 'block';
             overlay.style.display = 'block';
