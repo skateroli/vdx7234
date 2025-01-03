@@ -4,67 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Champion Database</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
         .champions-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            text-align: center;
         }
 
         h1 {
-            text-align: center;
             font-size: 3rem;
             margin-bottom: 2rem;
             text-transform: uppercase;
-            background: linear-gradient(45deg, #ff004c, #ffa500);
+            text-align: center;
+            background: linear-gradient(45deg, #fff, #aaa, #fff);
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
+            animation: titlePulse 3s ease-in-out infinite;
         }
 
         .role-section {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+            text-align: left;
         }
 
         .role-section h2 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
-            border-bottom: 2px solid #ffa500;
-            padding-bottom: 0.5rem;
+            color: white;
+            background: linear-gradient(45deg, #fff, #aaa, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .champions-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 0.5rem;
+            padding: 1rem;
         }
 
         .champion-card {
-            width: 64px;
-            height: 64px;
-            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            transition: transform 0.2s;
+            border-radius: 4px;
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .champion-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
 
         .champion-card img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-        }
-
-        .champion-card:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+            display: block;
         }
 
         .modal {
@@ -73,14 +73,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #1e1e1e;
+            background: black;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             z-index: 1000;
-            width: 90%;
-            max-width: 400px;
-            color: #ffffff;
+            min-width: 300px;
         }
 
         .overlay {
@@ -90,93 +88,96 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
 
-        .modal-header {
+        .champion-header {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
-        .modal-header img {
+        .champion-header img {
             width: 64px;
             height: 64px;
-            border-radius: 8px;
+            border-radius: 4px;
         }
 
-        .modal-body {
-            margin-top: 20px;
+        .champion-info {
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
         .close-button {
-            background-color: transparent;
-            border: none;
-            font-size: 24px;
-            color: #ffffff;
-            cursor: pointer;
             position: absolute;
             top: 10px;
             right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <!-- Modal -->
+    <div class="overlay" id="overlay"></div>
     <div id="championModal" class="modal">
         <button class="close-button" onclick="closeModal()">×</button>
-        <div class="modal-header">
-            <img id="modalChampIcon" src="" alt="Champion Icon">
-            <h2 id="modalChampName">Champion Name</h2>
+        <div class="champion-header">
+            <img id="modalChampIcon" src="" alt="">
+            <h3 id="modalChampName"></h3>
         </div>
-        <div class="modal-body">
-            <p><strong>Author(s):</strong> <span id="modalChampAuthors"></span></p>
+        <div class="champion-info">
+            <span><strong>Author(s):</strong> <span id="modalChampAuthors"></span></span>
         </div>
     </div>
 
+    <!-- Champions Section -->
     <div class="champions-container">
-        <h1>Champion Database</h1>
-
-        <!-- Top -->
+        <h1 data-text="Champion Database">Champion Database</h1>
+        
         <div class="role-section">
-            <h2>Top Lane</h2>
+            <h2>Top</h2>
             <div class="champions-grid">
                 <div class="champion-card" onclick="showModal('Darius', 'Author1')">
                     <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Darius.png" alt="Darius">
                 </div>
-                <div class="champion-card" onclick="showModal('Irelia', 'Author2')">
+                <div class="champion-card" onclick="showModal('Irelia', 'Author2, Author3')">
                     <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Irelia.png" alt="Irelia">
                 </div>
             </div>
         </div>
 
-        <!-- Jungle -->
-        <div class="role-section">
-            <h2>Jungle</h2>
-            <div class="champions-grid">
-                <div class="champion-card" onclick="showModal('Kindred', 'Author3')">
-                    <img src="https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Kindred.png" alt="Kindred">
-                </div>
-            </div>
-        </div>
-
-        <!-- Add more roles as needed -->
+        <!-- Add more roles (Jungle, Mid, etc.) -->
     </div>
 
     <script>
         function showModal(championName, authors) {
-            document.getElementById('modalChampIcon').src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championName}.png`;
-            document.getElementById('modalChampName').textContent = championName;
-            document.getElementById('modalChampAuthors').textContent = authors;
+            const modal = document.getElementById('championModal');
+            const modalIcon = document.getElementById('modalChampIcon');
+            const modalTitle = document.getElementById('modalChampName');
+            const modalAuthors = document.getElementById('modalChampAuthors');
+            const overlay = document.getElementById('overlay');
 
-            document.getElementById('championModal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
+            modalIcon.src = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championName}.png`;
+            modalTitle.textContent = championName;
+            modalAuthors.textContent = authors;
+            modal.style.display = 'block';
+            overlay.style.display = 'block';
         }
 
         function closeModal() {
-            document.getElementById('championModal').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
+            const modal = document.getElementById('championModal');
+            const overlay = document.getElementById('overlay');
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
         }
     </script>
 </body>
