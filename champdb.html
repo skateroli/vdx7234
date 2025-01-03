@@ -6,6 +6,49 @@
     <title>Champion Database</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white, 0 0 20px white;
+            opacity: 0.7;
+            animation: twinkle-star infinite;
+        }
+        
+        @keyframes twinkle-star {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.2; }
+        }
+
+        body {
+            background: black;
+            overflow-x: hidden;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: black;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+            min-width: 300px;
+            animation: borderPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes borderPulse {
+            0%, 100% { border-color: rgba(255, 255, 255, 0.5); }
+            50% { border-color: rgba(255, 255, 255, 1); }
+        }
+
+        /* Reszta stylów pozostaje bez zmian */
         .champions-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -232,6 +275,24 @@
     </div>
 
     <script>
+        // Tworzenie gwiazd w tle
+        function createStars() {
+            const starsCount = 100;
+            const container = document.body;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                container.appendChild(star);
+            }
+        }
+
+        // Inicjalizacja gwiazd przy załadowaniu strony
+        document.addEventListener('DOMContentLoaded', createStars);
+
         const champions = {
             top: [
                 { name: 'Darius', authors: ['Author 1', 'Author 2'] },
